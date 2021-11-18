@@ -19,10 +19,19 @@ bp = Blueprint(
 )
 
 
+@bp.get("")
+@bp.get("/")
+def auto_redirect():
+    if chk_login():
+        return redirect(url_for("editor.ready"))
+
+    return redirect(url_for("session.login"))
+
+
 @bp.get("/login")
 def login():
     if chk_login():
-        return redirect("/")
+        return redirect(url_for("editor.ready"))
 
     return render_template(
         "session/login.html"
@@ -32,7 +41,7 @@ def login():
 @bp.post("/login")
 def login_post():
     if chk_login():
-        return redirect("/")
+        return redirect(url_for("editor.ready"))
 
     user = get_user(
         User(
