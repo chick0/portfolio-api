@@ -40,6 +40,8 @@ def ready():
     return render_template(
         "editor/ready.html",
         pjs=projects.items,
+        pg_prev=projects.prev_num,
+        pg_next=projects.next_num,
     )
 
 

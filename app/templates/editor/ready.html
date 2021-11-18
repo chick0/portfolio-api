@@ -1,8 +1,7 @@
 {% extends 'layout.html' %}
 {% block content %}
     <div>
-        <a>← 이전</a>
-        <a>다음 →</a>
+        <a href="{{ url_for('editor.ready', page=pg_prev) }}">← 이전</a> | <a href="{{ url_for('editor.ready', page=pg_next) }}">다음 →</a>
     </div>
 
     <ul>
