@@ -2,7 +2,6 @@ from uuid import uuid4
 
 from flask import Blueprint
 from flask import abort
-from flask import session
 from flask import request
 from flask import redirect
 from flask import url_for
