@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <a href="{{ url_for('editor.ready') }}">← 뒤로 돌아가기</a>
+
+    <form method="post">
+        <div>
+            <h2>제목</h2>
+            <input type="text" name="title">
+        </div>
+
+        <div>
+            <h2>날짜</h2>
+            <input type="date" name="date">
+        </div>
+        <div>
+            <h2>태그</h2>
+            <input type="text" name="tag">
+        </div>
+        <div>
+            <h2>웹 사이트</h2>
+            <input type="url" name="web">
+        </div>
+        <div>
+            <h2>깃헙</h2>
+            <input type="url" name="github">
+        </div>
+
+        <div>
+            <h2>기획의도</h2>
+            <textarea class="editor" name="a"></textarea>
+        </div>
+        <div>
+            <h2>특징</h2>
+            <textarea class="editor" name="b"></textarea>
+        </div>
+        <div>
+            <h2>느낀점</h2>
+            <textarea class="editor" name="c"></textarea>
+        </div>
+
+        <div>
+            <button type="submit">저장</button>
+        </div>
+    </form>
+{% endblock %}
+{% block script %}
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script>
+        document.querySelectorAll(".editor").forEach((e)=>{
+            new SimpleMDE({
+                element: e,
+                spellChecker: false
+            });
+        });
+    </script>
+{% endblock %}
