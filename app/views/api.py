@@ -25,7 +25,7 @@ def projects():
 
     pjs = Project.query.order_by(
         Project.date.desc()
-    ).paginate(page)
+    ).paginate(page, per_page=6)
 
     return jsonify({
         "page": {
