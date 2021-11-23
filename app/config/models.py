@@ -3,7 +3,13 @@ from collections import namedtuple
 
 User = namedtuple(
     "User",
-    "user password"
+    "github_id"
+)
+
+
+Github = namedtuple(
+    "Github",
+    "client_id client_secret"
 )
 
 

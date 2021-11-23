@@ -5,10 +5,12 @@ from app.config import get_config
 
 
 def login() -> bool:
-    user = get_config("User")
-    us = session.get("session", {})
+    this_user_id = int(session.get("user", 0))
 
-    chk1 = user.user == us.get("user", "")
-    chk2 = user.password == us.get("password", "")
+    try:
+        user = get_config("User")
+        allow_user_id = int(user.github_id)
+    except ValueError:
+        return False
 
-    return chk1 and chk2
+    return this_user_id == allow_user_id
