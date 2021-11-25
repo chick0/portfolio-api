@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 
 from flask import Blueprint
 from flask import request
@@ -67,12 +68,17 @@ def project(project_id: str):
             }
         }), 404
 
+    github = pj.github
+    if github is None:
+        github = ""
+
     return jsonify({
         "title": pj.title,
         "date": pj.date.strftime("%Y년 %m월 %d일"),
         "tag": pj.tag,
         "web": pj.web,
-        "github": pj.github,
+        "github": github,
+        "github_preview": urlparse(github).path.replace("/", " ").strip().replace(" ", "/"),
         "content": {
             "a": pj.a,
             "b": pj.b,
