@@ -6,16 +6,19 @@ User = namedtuple(
     "github_id"
 )
 
-
 Github = namedtuple(
     "Github",
     "client_id client_secret"
 )
 
-
 Database = namedtuple(
     "Database",
     "host port user password database"
+)
+
+AccessControlAllowOrigin = namedtuple(
+    "AccessControlAllowOrigin",
+    "host"
 )
 
 
