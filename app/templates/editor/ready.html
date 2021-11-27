@@ -2,7 +2,8 @@
 {% block content %}
     <div>
         <a href="{{ url_for('editor.ready', page=pg_prev) }}">← 이전</a> |
-        <a href="{{ url_for('editor.ready', page=pg_next) }}">다음 →</a>
+        <a href="{{ url_for('editor.ready', page=pg_next) }}">다음 →</a> |
+        <a href="{{ url_for('session.logout') }}">로그아웃</a>
         <hr>
         <a href="{{ url_for('editor.new') }}">새 프로젝트 등록하기</a>
     </div>
