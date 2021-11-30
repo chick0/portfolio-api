@@ -10,7 +10,7 @@
 
     <ul>
     {% for pj in pjs %}
-        <li><a href="{{ url_for('editor.editor', project_id=pj.uuid) }}">{{ pj.title }}</a></li>
+        <li><a href="{{ url_for('editor.editor', project_id=pj.uuid, page=page) }}">{{ pj.title }}</a></li>
     {% endfor %}
     </ul>
 {% endblock %}

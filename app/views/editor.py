@@ -41,6 +41,7 @@ def ready():
         pjs=projects.items,
         pg_prev=projects.prev_num,
         pg_next=projects.next_num,
+        page=page
     )
 
 
@@ -56,10 +57,22 @@ def editor(project_id: str):
     if pj is None:
         return abort(404)
 
+    try:
+        page = int(request.args.get("page", "1"))
+
+        if page <= 0:
+            page = 1
+    except ValueError:
+        page = None
+
+    if page == 1:
+        page = None
+
     return render_template(
         "editor/editor.html",
-        sme=True,
-        pj=pj
+        editor=True,
+        pj=pj,
+        page=page
     )
 
 
@@ -86,7 +99,18 @@ def editor_post(project_id: str):
 
     db.session.commit()
 
-    return redirect(url_for("editor.editor", project_id=project_id))
+    try:
+        page = int(request.args.get("page", "1"))
+
+        if page <= 0:
+            page = 1
+    except ValueError:
+        page = None
+
+    if page == 1:
+        page = None
+
+    return redirect(url_for("editor.ready", page=page))
 
 
 @bp.get("/new")
@@ -94,9 +118,21 @@ def new():
     if not login():
         return redirect(url_for("session.login"))
 
+    try:
+        page = int(request.args.get("page", "1"))
+
+        if page <= 0:
+            page = 1
+    except ValueError:
+        page = None
+
+    if page == 1:
+        page = None
+
     return render_template(
         "editor/new.html",
-        sme=True,
+        editor=True,
+        page=page
     )
 
 
