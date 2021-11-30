@@ -43,7 +43,7 @@ def logout():
         del session[key]
 
     return {
-        True: "로그아웃 완료!",
+        True:  "로그아웃 완료!",
         False: "로그인 상태가 아닙니다.",
     }.get(is_login)
 
