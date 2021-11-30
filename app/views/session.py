@@ -37,10 +37,15 @@ def login():
 
 @bp.get("/logout")
 def logout():
+    is_login = chk_login()
+
     for key in list(session.keys()):
         del session[key]
 
-    return "당신은 로그인 할 수 없습니다."
+    return {
+        True: "로그아웃 완료!",
+        False: "로그인 상태가 아닙니다.",
+    }.get(is_login)
 
 
 @bp.get("/callback")
