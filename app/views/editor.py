@@ -11,7 +11,6 @@ from app import db
 from app.models import Project
 from app.check import login
 
-
 bp = Blueprint(
     name="editor",
     import_name="editor",

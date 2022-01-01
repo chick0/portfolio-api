@@ -1,4 +1,3 @@
-
 from flask import Blueprint
 from flask import session
 from flask import request
@@ -9,7 +8,6 @@ from app.check import login as chk_login
 from app.github import build_url
 from app.github import generate_access_token
 from app.github import get_user
-
 
 bp = Blueprint(
     name="session",

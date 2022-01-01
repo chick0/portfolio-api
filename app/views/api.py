@@ -6,7 +6,6 @@ from flask import jsonify
 
 from app.models import Project
 
-
 bp = Blueprint(
     name="api",
     import_name="api",
