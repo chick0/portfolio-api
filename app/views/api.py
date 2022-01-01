@@ -24,7 +24,12 @@ def projects():
     except ValueError:
         page = 1
 
-    pjs = Project.query.order_by(
+    pjs = Project.query.with_entities(
+        Project.uuid,
+        Project.title,
+        Project.tag,
+        Project.date,
+    ).order_by(
         Project.date.desc()
     ).paginate(page, per_page=8)
 

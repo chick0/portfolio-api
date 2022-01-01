@@ -32,7 +32,10 @@ def ready():
     except ValueError:
         page = 1
 
-    projects = Project.query.order_by(
+    projects = Project.query.with_entities(
+        Project.uuid,
+        Project.title,
+    ).order_by(
         Project.date.desc()
     ).paginate(page)
 
