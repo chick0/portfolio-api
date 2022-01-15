@@ -16,11 +16,6 @@ Database = namedtuple(
     "host port user password database"
 )
 
-AccessControlAllowOrigin = namedtuple(
-    "AccessControlAllowOrigin",
-    "host"
-)
-
 
 ##############################################
 del namedtuple
