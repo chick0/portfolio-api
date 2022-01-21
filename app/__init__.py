@@ -50,4 +50,17 @@ def create_app():
         }
     }), e.code))
 
+    # Info for crawler
+    @app.get("/robots.txt")
+    def robots():
+        return getattr(__import__("flask"), "Response")(
+            "\n".join([
+                "User-agent: *",
+                "Disallow: /",
+                "",
+                "# I AM NOT A WEB SERVER!",
+            ]),
+            mimetype="text/plain"
+        )
+
     return app
