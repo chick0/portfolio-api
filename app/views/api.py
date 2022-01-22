@@ -118,8 +118,8 @@ def search_tag():
             }
         }), 400
 
-    pjs = Project.query.filter_by(
-        tag=f"%{target}%"
+    pjs = Project.query.filter(
+        Project.tag.like(f"%{target}%")
     ).with_entities(
         Project.uuid,
         Project.title,
