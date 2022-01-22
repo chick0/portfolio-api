@@ -13,6 +13,10 @@ bp = Blueprint(
 )
 
 
+def parse_tags(tag_str: str) -> list:
+    return [x for x in [this.strip() for this in tag_str.split(",")] if len(x) != 0]
+
+
 @bp.get("/projects")
 def projects():
     try:
@@ -42,7 +46,7 @@ def projects():
                 "uuid": this.uuid,
                 "title": this.title,
                 "tag": this.tag,
-                "tags": [tag.strip() for tag in this.tag.split(",")],
+                "tags": parse_tags(this.tag),
                 "date": this.date.strftime("%Y년 %m월 %d일"),
             } for this in pjs.items
         ]
@@ -81,7 +85,7 @@ def project(project_id: str):
         "title": pj.title,
         "date": pj.date.strftime("%Y년 %m월 %d일"),
         "tag": pj.tag,
-        "tags": [tag.strip() for tag in pj.tag.split(",")],
+        "tags": parse_tags(pj.tag),
         "web": pj.web,
         "github": github,
         "github_preview": urlparse(github).path.replace("/", " ").strip().replace(" ", "/"),
@@ -134,7 +138,7 @@ def search_tag():
             {
                 "uuid": this.uuid,
                 "title": this.title,
-                "tags": [tag.strip() for tag in this.tag.split(",")],
+                "tags": parse_tags(this.tag),
                 "date": this.date.strftime("%Y년 %m월 %d일"),
             } for this in pjs.items
         ]
