@@ -42,6 +42,7 @@ def projects():
                 "uuid": this.uuid,
                 "title": this.title,
                 "tag": this.tag,
+                "tags": [tag.strip() for tag in this.tag.split(",")],
                 "date": this.date.strftime("%Y년 %m월 %d일"),
             } for this in pjs.items
         ]
@@ -80,6 +81,7 @@ def project(project_id: str):
         "title": pj.title,
         "date": pj.date.strftime("%Y년 %m월 %d일"),
         "tag": pj.tag,
+        "tags": [tag.strip() for tag in pj.tag.split(",")],
         "web": pj.web,
         "github": github,
         "github_preview": urlparse(github).path.replace("/", " ").strip().replace(" ", "/"),
@@ -88,4 +90,52 @@ def project(project_id: str):
             "b": pj.b,
             "c": pj.c
         },
+    })
+
+
+@bp.get("/tag")
+def search_tag():
+    try:
+        page = int(request.args.get("page", "1"))
+
+        if page <= 0:
+            page = 1
+    except ValueError:
+        page = 1
+
+    target = request.args.get("tag", "")
+
+    if len(target) == 0:
+        return jsonify({
+            "status": "fail",
+            "error": {
+                "code": "tag_missing",
+                "message": "검색할 태그를 전달받지 못했습니다."
+            }
+        }), 400
+
+    pjs = Project.query.filter_by(
+        tag=f"%{target}%"
+    ).with_entities(
+        Project.uuid,
+        Project.title,
+        Project.tag,
+        Project.date,
+    ).order_by(
+        Project.date.desc()
+    ).paginate(page, per_page=8)
+
+    return jsonify({
+        "page": {
+            "max": pjs.pages,
+            "this": page
+        },
+        "projects": [
+            {
+                "uuid": this.uuid,
+                "title": this.title,
+                "tags": [tag.strip() for tag in this.tag.split(",")],
+                "date": this.date.strftime("%Y년 %m월 %d일"),
+            } for this in pjs.items
+        ]
     })
