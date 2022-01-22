@@ -45,7 +45,6 @@ def projects():
             {
                 "uuid": this.uuid,
                 "title": this.title,
-                "tag": this.tag,
                 "tags": parse_tags(this.tag),
                 "date": this.date.strftime("%Y년 %m월 %d일"),
             } for this in pjs.items
@@ -84,7 +83,6 @@ def project(project_id: str):
     return jsonify({
         "title": pj.title,
         "date": pj.date.strftime("%Y년 %m월 %d일"),
-        "tag": pj.tag,
         "tags": parse_tags(pj.tag),
         "web": pj.web,
         "github": github,
