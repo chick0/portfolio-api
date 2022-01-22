@@ -57,6 +57,8 @@ def create_app():
             "\n".join([
                 "User-agent: *",
                 "Disallow: /",
+                "Allow: /api/project",
+                "Allow: /api/projects",
                 "",
                 "# I AM NOT A WEB SERVER!",
             ]),
