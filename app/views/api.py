@@ -82,6 +82,7 @@ def project(project_id: str):
 
     return jsonify({
         "title": pj.title,
+        "dt": pj.date.strftime("%Y-%m-%d"),
         "date": pj.date.strftime("%Y년 %m월 %d일"),
         "tags": parse_tags(pj.tag),
         "web": pj.web,
