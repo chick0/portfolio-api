@@ -4,6 +4,9 @@ flask-migrate
 
 pyjwt
 
+# CORS
+Flask-Cors
+
 # mysqlclient for production environment
 mysqlclient
 

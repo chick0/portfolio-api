@@ -15,8 +15,11 @@ colorama==0.4.4
 flask==2.0.2
     # via
     #   -r requirements.in
+    #   flask-cors
     #   flask-migrate
     #   flask-sqlalchemy
+flask-cors==3.0.10
+    # via -r requirements.in
 flask-migrate==3.1.0
     # via -r requirements.in
 flask-sqlalchemy==2.5.1
@@ -47,6 +50,8 @@ pycparser==2.21
     # via cffi
 pyjwt==2.3.0
     # via -r requirements.in
+six==1.16.0
+    # via flask-cors
 sqlalchemy==1.4.27
     # via
     #   alembic
