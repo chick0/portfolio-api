@@ -51,6 +51,7 @@ def callback():
                         "b": a + (6 * 3600)
                     },
                     "host": request.host,
+                    "client": request.referrer,
                     "type": "github"
                 },
                 key=SECRET_KEY.hex(),
