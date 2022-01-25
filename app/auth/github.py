@@ -1,5 +1,3 @@
-from time import time
-
 from flask import Blueprint
 from flask import request
 from flask import jsonify
@@ -9,6 +7,7 @@ from app.secret_key import SECRET_KEY
 from app.config import get_config
 from app.github import generate_access_token
 from app.github import get_user
+from app.token import get_token
 
 bp = Blueprint(
     name="github",
@@ -39,21 +38,12 @@ def callback():
     user = get_user(access_token)
 
     if check_id(user.id):
-        a = int(time())
+        token = get_token(user.id)
 
         return jsonify({
             "result": True,
             "token": encode(
-                payload={
-                    "id": user.id,
-                    "time": {
-                        "a": a,
-                        "b": a + (6 * 3600)
-                    },
-                    "host": request.host,
-                    "client": request.referrer,
-                    "type": "github"
-                },
+                payload=token,
                 key=SECRET_KEY.hex(),
                 algorithm="HS256"
             )
