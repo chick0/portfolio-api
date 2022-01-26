@@ -1,7 +1,9 @@
 __all__ = [
-    "api",
     "auth",
     "manage",
+    "project",
+    "projects",
+    "tag",
 ]
 
 from . import *

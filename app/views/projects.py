@@ -7,9 +7,9 @@ from flask import jsonify
 from app.models import Project
 
 bp = Blueprint(
-    name="api",
-    import_name="api",
-    url_prefix="/api"
+    name="projects",
+    import_name="projects",
+    url_prefix="/projects"
 )
 
 
@@ -17,8 +17,8 @@ def parse_tags(tag_str: str) -> list:
     return [x for x in [this.strip() for this in tag_str.split(",")] if len(x) != 0]
 
 
-@bp.get("/projects")
-def projects():
+@bp.get("")
+def get_project_list():
     try:
         page = int(request.args.get("page", "1"))
 
