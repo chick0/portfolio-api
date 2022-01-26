@@ -2,10 +2,14 @@ from time import time as timestamp
 from collections import namedtuple
 
 from flask import request
+from jwt import decode
+from jwt.exceptions import InvalidSignatureError
 
 from app import auth
+from app.secret_key import SECRET_KEY
 from app.config import get_config
 
+ERR = namedtuple("ERR", "message status")
 TIME = namedtuple("TIME", "a b")
 TOKEN = namedtuple(
     "TOKEN",
@@ -53,8 +57,30 @@ def parse(token: dict) -> TOKEN:
         raise TimeoutError("토큰 만료됨")
 
 
-def check(token: dict) -> bool or object:
-    ERR = namedtuple("ERR", "message status")
+def check() -> ERR or None:
+    try:
+        authorization = request.headers.get("authorization")
+        tp, token = authorization.split(" ")
+
+        if tp != "Bearer":
+            raise ValueError
+    except ValueError:
+        return ERR(
+            message="인증 토큰이 없습니다.",
+            status=400
+        )
+
+    try:
+        token = decode(
+            jwt=token,
+            key=SECRET_KEY.hex(),
+            algorithms=["HS256"]
+        )
+    except InvalidSignatureError:
+        return ERR(
+            message="인증키가 올바르지 않습니다",
+            status=400
+        )
 
     try:
         token = parse(token=token)
@@ -96,4 +122,4 @@ def check(token: dict) -> bool or object:
             status=403
         )
 
-    return True
+    return None

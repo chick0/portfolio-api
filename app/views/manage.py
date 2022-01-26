@@ -18,33 +18,9 @@ bp = Blueprint(
 
 @bp.delete("/<string:project_id>")
 def project_del(project_id: str):
-    try:
-        authorization = request.headers.get("authorization")
-        tp, token = authorization.split(" ")
-
-        if tp != "Bearer":
-            raise ValueError
-    except ValueError:
-        return jsonify({
-            "message": "인증 토큰이 없습니다."
-        }), 400
-
-    try:
-        token = decode(
-            jwt=token,
-            key=SECRET_KEY.hex(),
-            algorithms=["HS256"]
-        )
-    except InvalidSignatureError:
-        return jsonify({
-            "message": "인증키가 올바르지 않습니다"
-        }), 400
-
-    result = check(token=token)
-    print(result)
-
-    if not isinstance(result, bool):
-        return jsonify({"message": result.message}),\
+    result = check()
+    if result is not None:
+        return jsonify({"message": result.message}), \
                result.status
 
     pj = Project.query.with_entities(
