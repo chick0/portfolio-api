@@ -81,7 +81,7 @@ def check() -> ERR or None:
             key=SECRET_KEY.hex(),
             algorithms=["HS256"]
         )
-    except InvalidSignatureError:
+    except (InvalidSignatureError, Exception):
         return ERR(
             message="인증키가 올바르지 않습니다",
             status=400
