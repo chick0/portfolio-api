@@ -63,10 +63,15 @@ def check() -> ERR or None:
         tp, token = authorization.split(" ")
 
         if tp != "Bearer":
-            raise ValueError
+            raise TypeError
     except ValueError:
         return ERR(
             message="인증 토큰이 없습니다.",
+            status=400
+        )
+    except TypeError:
+        return ERR(
+            message="요청 형식이 올바르지 않습니다.",
             status=400
         )
 
