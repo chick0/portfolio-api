@@ -25,7 +25,6 @@ def create_app():
     test_config()
 
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = SECRET_KEY
 
     app.config['SQLALCHEMY_DATABASE_URI'] = get_url()
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
