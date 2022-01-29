@@ -5,16 +5,13 @@ from flask import request
 from flask import jsonify
 
 from app.models import Project
+from app.tools import parse_tags
 
 bp = Blueprint(
     name="projects",
     import_name="projects",
     url_prefix="/projects"
 )
-
-
-def parse_tags(tag_str: str) -> list:
-    return [x for x in [this.strip() for this in tag_str.split(",")] if len(x) != 0]
 
 
 @bp.get("")
