@@ -64,7 +64,7 @@ def check() -> ERR or None:
 
         if tp != "Bearer":
             raise TypeError
-    except ValueError:
+    except (ValueError, AttributeError):
         return ERR(
             message="인증 토큰이 없습니다.",
             status=400
