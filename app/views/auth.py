@@ -3,6 +3,7 @@ from flask import jsonify
 
 from app.github import build_url
 from app import auth
+from app.token import check
 
 bp = Blueprint(
     name="auth",
@@ -21,3 +22,16 @@ def get_url():
     return jsonify({
         "github": build_url(),
     })
+
+
+@bp.get("/test")
+def test():
+    result = check()
+    if result is None:
+        return jsonify({
+            "message": "해당 토큰은 유효한 토큰 입니다."
+        }), 200
+    else:
+        return jsonify({
+            "message": result.message
+        }), result.status
