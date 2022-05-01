@@ -1,5 +1,3 @@
-from urllib.parse import urlparse
-
 from flask import Blueprint
 from flask import jsonify
 
@@ -48,7 +46,6 @@ def get_project(project_id: str):
         "tags": parse_tags(pj.tag),
         "web": pj.web,
         "github": github,
-        "github_preview": urlparse(github).path.replace("/", " ").strip().replace(" ", "/"),
         "content": {
             "a": pj.a,
             "b": pj.b,
