@@ -1,5 +1,7 @@
 from hashlib import sha512
 from random import choices
+from datetime import datetime
+from datetime import timedelta
 
 from flask import Blueprint
 from flask import request
@@ -85,6 +87,13 @@ def verify():
         return error(
             code=400,
             message="올바른 인증 코드가 아닙니다."
+        )
+
+    dead_line = code.creation_date + timedelta(minutes=3)
+    if datetime.now() < dead_line:
+        return error(
+            code=400,
+            message="만료된 인증 코드 입니다."
         )
 
     code.used = True
