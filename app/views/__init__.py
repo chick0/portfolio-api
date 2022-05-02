@@ -3,6 +3,7 @@ __all__ = [
     "project",
     "projects",
     "tag",
+    "token",
 ]
 
 from . import *
