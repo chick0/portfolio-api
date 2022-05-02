@@ -56,3 +56,19 @@ def renew(payload: dict):
             )
         )
     })
+
+
+@bp.get("/history")
+@login_required
+def history(payload: dict):
+    codes = []
+    for code in Code.query.filter_by(
+        owner_id=payload['user_id']
+    ).order_by(
+        Code.id.desc()
+    ).limit(60).all():
+        codes.append(code.to_json())
+
+    return jsonify({
+        "history": codes
+    })
