@@ -3,6 +3,7 @@ from flask import request
 from flask import jsonify
 
 from app.models import Project
+from app.utils import error
 from app.utils import parse_tags
 
 bp = Blueprint(
@@ -25,13 +26,10 @@ def search_tag():
     target = request.args.get("tag", "")
 
     if len(target) == 0:
-        return jsonify({
-            "status": "fail",
-            "error": {
-                "code": "tag_missing",
-                "message": "검색할 태그를 전달받지 못했습니다."
-            }
-        }), 400
+        return error(
+            code=400,
+            message="검색할 태그를 전달받지 못했습니다."
+        )
 
     pjs = Project.query.filter(
         Project.tag.like(f"%{target}%")
@@ -42,7 +40,7 @@ def search_tag():
         Project.date,
     ).order_by(
         Project.date.desc()
-    ).paginate(page, per_page=8)
+    ).paginate(page, per_page=8, error_out=False)
 
     return jsonify({
         "page": {

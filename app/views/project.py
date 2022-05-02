@@ -2,6 +2,7 @@ from flask import Blueprint
 from flask import jsonify
 
 from app.models import Project
+from app.utils import error
 from app.utils import parse_tags
 
 bp = Blueprint(
@@ -14,26 +15,20 @@ bp = Blueprint(
 @bp.get("/<string:project_id>")
 def get_project(project_id: str):
     if len(project_id) != 36:
-        return jsonify({
-            "status": "fail",
-            "error": {
-                "code": "uuid_length_error",
-                "message": "프로젝트 아이디가 올바르지 않습니다."
-            }
-        }), 400
+        return error(
+            code=400,
+            message="프로젝트 아이디가 올바르지 않습니다."
+        )
 
     pj = Project.query.filter_by(
         uuid=project_id
     ).first()
 
     if pj is None:
-        return jsonify({
-            "status": "fail",
-            "error": {
-                "code": "project_not_found",
-                "message": "해당 프로젝트를 조회하지 못했습니다."
-            }
-        }), 404
+        return error(
+            code=404,
+            message="해당 프로젝트를 찾지 못했습니다."
+        )
 
     github = pj.github
     if github is None:
