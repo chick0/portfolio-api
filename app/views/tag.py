@@ -3,7 +3,7 @@ from flask import request
 from flask import jsonify
 
 from app.models import Project
-from app.tools import parse_tags
+from app.utils import parse_tags
 
 bp = Blueprint(
     name="tag",

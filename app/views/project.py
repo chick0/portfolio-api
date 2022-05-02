@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import jsonify
 
 from app.models import Project
-from app.tools import parse_tags
+from app.utils import parse_tags
 
 bp = Blueprint(
     name="project",
