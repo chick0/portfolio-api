@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from sqlalchemy import func
 
 from app import db
@@ -96,5 +98,16 @@ class Code(db.Model):
         default=func.now()
     )
 
+    def to_json(self) -> dict:
+        return {
+            "id": self.id,
+            "owner_id": self.owner_id,
+            "code": self.code if self.code == "-" else "******",
+            "ip": self.ip,
+            "used": self.used,
+            "creation_date": round(self.creation_date.timestamp()),
+            "dead_date": round((self.creation_date + timedelta(minutes=3)).timestamp()),
+        }
+
     def __repr__(self):
-        return f"<User id={self.id} email={self.email!r}>"
+        return f"<Code id={self.id} owner_id={self.owner_id}>"
