@@ -77,7 +77,8 @@ def verify():
         )
 
     code = Code.query.filter_by(
-        code=code
+        code=code,
+        used=False
     ).first()
 
     if code is None:
@@ -85,6 +86,9 @@ def verify():
             code=400,
             message="올바른 인증 코드가 아닙니다."
         )
+
+    code.used = True
+    db.session.commit()
 
     return jsonify({
         "token": encode_payload(
