@@ -31,7 +31,7 @@ def get_project_list():
         Project.date,
     ).order_by(
         Project.date.desc()
-    ).paginate(page, per_page=20)
+    ).paginate(page, per_page=20, error_out=False)
 
     return jsonify({
         "page": {
