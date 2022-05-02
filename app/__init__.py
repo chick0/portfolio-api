@@ -39,8 +39,6 @@ def create_app():
                 "Disallow: /",
                 "Allow: /api/project",
                 "Allow: /api/projects",
-                "",
-                "# I AM NOT A WEB SERVER!",
             ]),
             mimetype="text/plain"
         )
