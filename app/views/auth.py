@@ -102,7 +102,8 @@ def verify():
     return jsonify({
         "token": encode_payload(
             payload=get_payload(
-                id=code.owner_id
+                user_id=code.owner_id,
+                code_id=code.id,
             )
         )
     })

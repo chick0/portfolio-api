@@ -1,4 +1,5 @@
 from time import time as timestamp
+from datetime import timedelta
 
 from flask import request
 from jwt import encode
@@ -16,7 +17,7 @@ def encode_payload(payload: dict):
     )
 
 
-def get_payload(id: int, host: str = None, client: str = None, time: int = 6 * 3600) -> dict:
+def get_payload(user_id: int, code_id: int, host: str = None, client: str = None) -> dict:
     if host is None:
         host = request.host
 
@@ -24,10 +25,11 @@ def get_payload(id: int, host: str = None, client: str = None, time: int = 6 * 3
         client = request.origin
 
     return {
-        "id": id,
+        "user_id": user_id,
+        "code_id": code_id,
         "time": {
             "a": int(timestamp()),
-            "b": int(timestamp()) + time,
+            "b": int(timestamp()) + timedelta(hours=2, minutes=30).seconds,
         },
         "host": host,
         "client": client
