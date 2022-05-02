@@ -76,8 +76,7 @@ class Code(db.Model):
     )
 
     code = db.Column(
-        db.String(8),
-        unique=True,
+        db.String(6),
         nullable=False
     )
 
