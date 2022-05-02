@@ -46,7 +46,7 @@ def login_post():
 
     code = Code()
     code.owner_id = user.id
-    code.code = "".join(choices(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], k=8))
+    code.code = "".join(choices(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], k=6))
     code.ip = request.headers.get("X-Forwarded-For", request.remote_addr)
     code.used = False
 
@@ -71,7 +71,7 @@ def ready():
 
 @bp.post("/verify")
 def verify():
-    code = request.json.get("code", "").strip()
+    code = request.json.get("code", "").replace(" ", "")
     if len(code) != 8:
         return error(
             code=400,

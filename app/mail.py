@@ -11,8 +11,9 @@ SMTP_PASSWORD = environ['SMTP_PASSWORD']
 
 def send_mail(email: str, code: str, ip: str):
     html = "\n".join([
-        f"<h1>{code[:4]} {code[4:]}</h1>",
+        f"<h1>{code[:3]} {code[3:]}</h1>",
         f"<p>인증 코드는 3분후 만료됩니다.</p>",
+        "<br>",
         "<br>",
         f"<p>요청 정보 : {ip}</p>",
     ])
