@@ -3,13 +3,24 @@ from time import time as timestamp
 from flask import request
 from flask import jsonify
 from flask import Response
+from jwt import encode
 from jwt import decode
 from jwt.exceptions import InvalidSignatureError
 
 from app.secret_key import SECRET_KEY
 
+algorithms = ['HS256']
 
-def get_token(id_: str, host: str = None, client: str = None, time: int = 6 * 3600) -> dict:
+
+def encode_payload(payload: dict):
+    return encode(
+        payload=payload,
+        algorithm=algorithms[0],
+        key=SECRET_KEY.hex()
+    )
+
+
+def get_payload(id: int, host: str = None, client: str = None, time: int = 6 * 3600) -> dict:
     if host is None:
         host = request.host
 
@@ -17,7 +28,7 @@ def get_token(id_: str, host: str = None, client: str = None, time: int = 6 * 36
         client = request.origin
 
     return {
-        "id": id_,
+        "id": id,
         "time": {
             "a": int(timestamp()),
             "b": int(timestamp()) + time,
@@ -49,7 +60,7 @@ def check() -> Response or None:
         token = decode(
             jwt=token,
             key=SECRET_KEY.hex(),
-            algorithms=["HS256"]
+            algorithms=algorithms
         )
     except (InvalidSignatureError, Exception):
         return jsonify(

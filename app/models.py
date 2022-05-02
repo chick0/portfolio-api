@@ -1,4 +1,3 @@
-
 from sqlalchemy import func
 
 from app import db
@@ -38,3 +37,66 @@ class Project(db.Model):
 
     def __repr__(self):
         return f"<Project uuid={self.uuid!r}, title={self.title!r}>"
+
+
+class User(db.Model):
+    id = db.Column(
+        db.Integer,
+        unique=True,
+        primary_key=True,
+        nullable=False
+    )
+
+    email = db.Column(
+        db.String(96),
+        unique=True,
+        nullable=False
+    )
+
+    password = db.Column(
+        db.String(128),
+        nullable=False
+    )
+
+    def __repr__(self):
+        return f"<User id={self.id} email={self.email!r}>"
+
+
+class Code(db.Model):
+    id = db.Column(
+        db.Integer,
+        unique=True,
+        primary_key=True,
+        nullable=False
+    )
+
+    owner_id = db.Column(
+        db.Integer,
+        db.ForeignKey("user.id")
+    )
+
+    code = db.Column(
+        db.String(8),
+        unique=True,
+        nullable=False
+    )
+
+    ip = db.Column(
+        db.String(120),
+        unique=True,
+        nullable=False
+    )
+
+    used = db.Column(
+        db.Boolean,
+        nullable=False,
+    )
+
+    creation_date = db.Column(
+        db.DateTime,
+        nullable=False,
+        default=func.now()
+    )
+
+    def __repr__(self):
+        return f"<User id={self.id} email={self.email!r}>"
