@@ -92,7 +92,7 @@ def verify():
         )
 
     dead_line = code.creation_date + timedelta(minutes=3)
-    if datetime.now() < dead_line:
+    if datetime.now() > dead_line:
         return error(
             code=400,
             message="만료된 인증 코드 입니다."
