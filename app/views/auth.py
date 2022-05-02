@@ -1,3 +1,4 @@
+from re import compile
 from hashlib import sha512
 from random import choices
 from datetime import datetime
@@ -71,8 +72,9 @@ def ready():
 
 @bp.post("/verify")
 def verify():
-    code = request.json.get("code", "").replace(" ", "")
-    if len(code) != 8:
+    re = compile(r"\d")
+    code = "".join(re.findall(request.json.get("code", "")))
+    if len(code) != 6:
         return error(
             code=400,
             message="올바른 인증 코드가 아닙니다."
