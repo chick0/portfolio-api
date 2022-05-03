@@ -85,7 +85,20 @@ def history(payload: dict):
 def revoke_code(payload: dict, code_id: int):
     code = Code.query.filter_by(
         id=code_id,
+        owner_id=payload['user_id'],
     ).first()
+
+    if code is None:
+        return error(
+            code=404,
+            message="해당 코드를 찾지 못했습니다."
+        )
+
+    if code.code == "#":
+        return error(
+            code=400,
+            message="해당 코드는 이미 취소된 코드 입니다."
+        )
 
     code.code = "#"
 
