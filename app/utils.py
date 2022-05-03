@@ -8,6 +8,7 @@ from jwt.exceptions import InvalidSignatureError
 
 from app.token import algorithms
 from app.secret_key import SECRET_KEY
+from app.models import Code
 
 
 def error(code: int, message: str):
@@ -59,10 +60,29 @@ def login_required(f):
                     code=403,
                     message="토큰을 생성한 클라이언트가 다릅니다."
                 )
+
+            code = Code.query.filter_by(
+                id=token['code_id']
+            ).with_entities(
+                Code.code
+            ).first()
         except KeyError:
             return error(
                 code=400,
                 message="토큰 형식이 올바르지 않습니다."
+            )
+
+        # code from L64
+        if code is None:
+            return error(
+                code=404,
+                message="인증 코드가 없는 토큰은 사용 할 수 없습니다."
+            )
+
+        if code.code == "#":
+            return error(
+                code=400,
+                message="해당 토큰은 취소된 인증 코드를 사용하고 있습니다."
             )
 
         return f(*args, **kwargs, payload=token)
