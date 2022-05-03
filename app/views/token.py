@@ -31,10 +31,16 @@ def renew(payload: dict):
         id=payload['code_id']
     ).first()
 
-    if code is None:
+    if code is None or code.code == "#":
         return error(
             code=400,
             message="인증 코드 정보가 삭제된 인증 토큰 입니다."
+        )
+
+    if code.code == "-":
+        return error(
+            code=400,
+            message="해당 인증 토큰은 연장 할 수 없습니다."
         )
 
     nc = Code()
@@ -71,4 +77,20 @@ def history(payload: dict):
 
     return jsonify({
         "history": codes
+    })
+
+
+@bp.delete("/code/<int:code_id>")
+@login_required
+def revoke_code(payload: dict, code_id: int):
+    code = Code.query.filter_by(
+        id=code_id,
+    ).first()
+
+    code.code = "#"
+
+    db.session.commit()
+
+    return jsonify({
+        "status": True
     })
