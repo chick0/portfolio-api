@@ -108,6 +108,34 @@ def edit_project(project_id: str, payload: dict):
     })
 
 
+@bp.delete("/<string:project_id>")
+@login_required
+def delete_project(project_id: str, payload: dict):
+    if len(project_id) != 36:
+        return error(
+            code=400,
+            message="프로젝트 아이디가 올바르지 않습니다."
+        )
+
+    pj = Project.query.filter_by(
+        uuid=project_id
+    ).first()
+
+    if pj is None:
+        return error(
+            code=404,
+            message="해당 프로젝트를 찾지 못했습니다."
+        )
+
+    db.session.delete(pj)
+    db.session.commit()
+
+    return jsonify({
+        "status": True,
+        "message": f"'{pj.title}' 프로젝트가 삭제되었습니다."
+    })
+
+
 @bp.post("")
 @login_required
 def create_project(payload: dict):
