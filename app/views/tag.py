@@ -40,7 +40,7 @@ def search_tag():
         Project.date,
     ).order_by(
         Project.date.desc()
-    ).paginate(page, per_page=8, error_out=False)
+    ).paginate(page, per_page=20, error_out=False)
 
     return jsonify({
         "page": {
