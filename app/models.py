@@ -102,7 +102,7 @@ class Code(db.Model):
         return {
             "id": self.id,
             "owner_id": self.owner_id,
-            "code": self.code if self.code == "-" else "******",
+            "code": self.code if len(self.code) == 1 else "******",
             "ip": self.ip,
             "used": self.used,
             "creation_date": round(self.creation_date.timestamp()),
