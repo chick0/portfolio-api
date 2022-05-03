@@ -15,7 +15,7 @@ def send_mail(email: str, code: str, ip: str):
         f"<p>인증 코드는 3분후 만료됩니다.</p>",
         "<br>",
         "<br>",
-        f"<p>요청 정보 : {ip}</p>",
+        f"<p>요청 IP : {ip}</p>",
     ])
 
     payload = MIMEText(html, "html", "utf-8")
