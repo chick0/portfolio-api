@@ -20,9 +20,18 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # add CORS Headers with extension
+    import logging
+    logging.getLogger('flask_cors').level = logging.DEBUG
+    logging.getLogger('flask_cors').addHandler(
+        hdlr=logging.StreamHandler()
+    )
+
     CORS(
         app=app,
-        origins=environ['CORS_ORIGIN'],
+        origins=[
+            x.strip()
+            for x in environ['CORS_ORIGIN'].split(";") if len(x.strip()) != 0
+        ],
         allow_headers=[
             "content-type",
             "x-auth"
