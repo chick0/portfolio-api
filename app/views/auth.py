@@ -6,10 +6,7 @@ from datetime import timedelta
 
 from flask import Blueprint
 from flask import request
-from flask import redirect
-from flask import url_for
 from flask import jsonify
-from flask import render_template
 
 from app import db
 from app.models import User
@@ -26,24 +23,27 @@ bp = Blueprint(
 )
 
 
-@bp.get("")
-def login():
-    return render_template(
-        "auth/login.html"
-    )
-
-
 @bp.post("")
-def login_post():
-    email = request.form.get("email", "")
-    password = sha512(request.form.get("password", "").encode()).hexdigest()
+def login():
+    json = request.get_json(silent=True)
+    try:
+        email = json['email']
+        password = sha512(json['password'].encode()).hexdigest()
+    except (KeyError, TypeError):
+        return error(
+            code=400,
+            message="이메일과 비밀번호를 입력해주세요."
+        )
 
     user = User.query.filter_by(
         email=email,
         password=password
     ).first()
     if user is None:
-        return redirect(url_for("auth.login"))
+        return error(
+            code=404,
+            message="이메일 또는 비밀번호가 올바르지 않습니다."
+        )
 
     code = Code()
     code.owner_id = user.id
@@ -60,20 +60,26 @@ def login_post():
         ip=code.ip,
     )
 
-    return redirect(url_for("auth.ready"))
-
-
-@bp.get("/ready")
-def ready():
-    return render_template(
-        "auth/ready.html"
-    )
+    return jsonify({
+        "status": True,
+        "message": "이메일로 인증 코드가 전송되었습니다. 이메일을 확인해주세요."
+    })
 
 
 @bp.post("/verify")
 def verify():
+    json = request.get_json(silent=True)
+    try:
+        code = json['code']
+        email = json['email']
+    except (KeyError, TypeError):
+        return error(
+            code=400,
+            message="이메일과 인증 코드를 입려해주세요."
+        )
+
     re = compile(r"\d")
-    code = "".join(re.findall(request.json.get("code", "")))
+    code = "".join(re.findall(code))
     if len(code) != 6:
         return error(
             code=400,
@@ -96,6 +102,15 @@ def verify():
         return error(
             code=400,
             message="만료된 인증 코드 입니다."
+        )
+
+    if User.query.filter_by(
+        id=code.owner_id,
+        email=email
+    ).with_entities(User.id).first() is None:
+        return error(
+            code=400,
+            message="올바른 인증 코드가 아닙니다."
         )
 
     code.used = True

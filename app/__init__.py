@@ -43,4 +43,14 @@ def create_app():
             mimetype="text/plain"
         )
 
+    from app.utils import error
+
+    @app.errorhandler(404)
+    @app.errorhandler(405)
+    def error_handler(http_error):
+        return error(
+            code=http_error.code,
+            message="올바른 요청이 아닙니다."
+        )
+
     return app
