@@ -77,6 +77,8 @@ class Code(db.Model):
         db.ForeignKey("user.id")
     )
 
+    # - : 연장 하는데 사용된 인증 토큰 / 재사용 불가능
+    # # : 인증 정보가 취소된 인증 토큰 / 사용 불가능
     code = db.Column(
         db.String(6),
         nullable=False

@@ -34,7 +34,7 @@ def renew(payload: dict):
     if code is None or code.code == "#":
         return error(
             code=400,
-            message="인증 코드 정보가 삭제된 인증 토큰 입니다."
+            message="인증 코드 정보가 취소된 인증 토큰 입니다."
         )
 
     if code.code == "-":
