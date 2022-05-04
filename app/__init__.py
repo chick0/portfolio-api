@@ -20,7 +20,14 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # add CORS Headers with extension
-    CORS(app)
+    CORS(
+        app=app,
+        origins=environ['CORS_ORIGIN'],
+        allow_headers=[
+            "content-type",
+            "x-auth"
+        ]
+    )
 
     __import__("app.models")
     db.init_app(app)
