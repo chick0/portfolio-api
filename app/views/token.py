@@ -49,6 +49,8 @@ def renew(payload: dict):
     nc.ip = request.headers.get("X-Forwarded-For", request.remote_addr)
     nc.used = True
 
+    code.code = "@"
+
     db.session.add(nc)
     db.session.commit()
 
