@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from sqlalchemy import func
 
 from app import db
@@ -109,7 +107,6 @@ class Code(db.Model):
             "ip": self.ip,
             "used": self.used,
             "creation_date": round(self.creation_date.timestamp()),
-            "dead_date": round((self.creation_date + timedelta(minutes=3)).timestamp()),
         }
 
     def __repr__(self):
