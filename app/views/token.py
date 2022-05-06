@@ -96,7 +96,7 @@ def revoke_code(payload: dict, code_id: int):
             message="해당 코드를 찾지 못했습니다."
         )
 
-    if code.code == "#":
+    if code.code == "#" or code.code == "@":
         return error(
             code=400,
             message="해당 코드는 이미 취소된 코드 입니다."
