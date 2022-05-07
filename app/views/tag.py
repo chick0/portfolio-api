@@ -1,6 +1,7 @@
 from flask import Blueprint
 from flask import request
 from flask import jsonify
+from sqlalchemy import and_
 
 from app.models import Project
 from app.utils import error
@@ -23,16 +24,21 @@ def search_tag():
     except ValueError:
         page = 1
 
-    target = request.args.get("tag", "")
-
-    if len(target) == 0:
+    targets = [x for x in [x.strip() for x in request.args.get("tags", "").split(",")] if len(x) != 0]
+    if len(targets) == 0:
         return error(
             code=400,
             message="검색할 태그를 전달받지 못했습니다."
         )
 
+    if len(targets) > 5:
+        return error(
+            code=400,
+            message="너무 많은 태그를 선택했습니다."
+        )
+
     pjs = Project.query.filter(
-        Project.tag.like(f"%{target}%")
+        and_(Project.tag.like(f"%{x}%") for x in targets)
     ).with_entities(
         Project.uuid,
         Project.title,
