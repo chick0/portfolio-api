@@ -11,6 +11,10 @@ from app.secret_key import SECRET_KEY
 from app.models import Code
 
 
+def get_ip():
+    return request.headers.get("X-Forwarded-For", request.remote_addr)
+
+
 def error(code: int, message: str):
     return jsonify({
         "code": code,

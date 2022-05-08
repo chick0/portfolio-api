@@ -1,11 +1,11 @@
 from time import time as timestamp
 
 from flask import Blueprint
-from flask import request
 from flask import jsonify
 
 from app import db
 from app.models import Code
+from app.utils import get_ip
 from app.utils import error
 from app.utils import login_required
 from app.token import get_payload
@@ -46,7 +46,7 @@ def renew(payload: dict):
     nc = Code()
     nc.owner_id = code.owner_id
     nc.code = "-"
-    nc.ip = request.headers.get("X-Forwarded-For", request.remote_addr)
+    nc.ip = get_ip()
     nc.used = True
 
     code.code = "@"

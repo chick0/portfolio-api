@@ -12,6 +12,7 @@ from app import db
 from app.models import User
 from app.models import Code
 from app.mail import send_mail
+from app.utils import get_ip
 from app.utils import error
 from app.token import get_payload
 from app.token import encode_payload
@@ -59,7 +60,7 @@ def login():
     code = Code()
     code.owner_id = user.id
     code.code = "".join(choices(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], k=6))
-    code.ip = request.headers.get("X-Forwarded-For", request.remote_addr)
+    code.ip = get_ip()
     code.used = False
 
     db.session.add(code)
