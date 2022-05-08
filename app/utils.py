@@ -68,7 +68,8 @@ def login_required(f):
             code = Code.query.filter_by(
                 id=token['code_id']
             ).with_entities(
-                Code.code
+                Code.code,
+                Code.ip
             ).first()
         except KeyError:
             return error(
@@ -87,6 +88,12 @@ def login_required(f):
             return error(
                 code=400,
                 message="해당 토큰은 취소된 인증 코드를 사용하고 있습니다."
+            )
+
+        if code.ip != get_ip():
+            return error(
+                code=400,
+                message="로그인을 요청한 IP 주소와 현재 IP 주소가 다릅니다."
             )
 
         return f(*args, **kwargs, payload=token)
