@@ -1,3 +1,6 @@
+from datetime import datetime
+from datetime import timedelta
+
 from sqlalchemy import func
 
 from app import db
@@ -99,6 +102,9 @@ class Code(db.Model):
         default=func.now()
     )
 
+    def is_expired(self) -> bool:
+        return self.creation_date < datetime.now() - timedelta(minutes=3)
+
     def to_json(self) -> dict:
         return {
             "id": self.id,
@@ -107,6 +113,7 @@ class Code(db.Model):
             "ip": self.ip,
             "used": self.used,
             "creation_date": round(self.creation_date.timestamp()),
+            "expired": self.is_expired()
         }
 
     def __repr__(self):

@@ -45,6 +45,17 @@ def login():
             message="이메일 또는 비밀번호가 올바르지 않습니다."
         )
 
+    if Code.query.with_entities(Code.id).filter_by(
+        owner_id=user.id,
+        used=False,
+    ).filter(
+        Code.creation_date >= datetime.now() - timedelta(minutes=3)
+    ).first() is not None:
+        return error(
+            code=400,
+            message="다른 세션에서 로그인을 시도하고 있습니다."
+        )
+
     code = Code()
     code.owner_id = user.id
     code.code = "".join(choices(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], k=6))
@@ -97,8 +108,7 @@ def verify():
             message="올바른 인증 코드가 아닙니다."
         )
 
-    dead_line = code.creation_date + timedelta(minutes=3)
-    if datetime.now() > dead_line:
+    if code.is_expired():
         return error(
             code=400,
             message="만료된 인증 코드 입니다."
