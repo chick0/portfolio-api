@@ -74,7 +74,8 @@ def login():
 
     return jsonify({
         "status": True,
-        "message": "이메일로 인증 코드가 전송되었습니다. 이메일을 확인해주세요."
+        "message": "이메일로 인증 코드가 전송되었습니다. 이메일을 확인해주세요.",
+        "code_id": code.id,
     })
 
 
@@ -82,12 +83,21 @@ def login():
 def verify():
     json = request.get_json(silent=True)
     try:
+        code_id = json['code_id']
         code = json['code']
         email = json['email']
     except (KeyError, TypeError):
         return error(
             code=400,
             message="이메일과 인증 코드를 입려해주세요."
+        )
+
+    try:
+        code_id = int(code_id)
+    except (ValueError, TypeError):
+        return error(
+            code=400,
+            message="인증 코드 아이디가 숫자가 아닙니다."
         )
 
     re = compile(r"\d")
@@ -99,6 +109,7 @@ def verify():
         )
 
     code = Code.query.filter_by(
+        id=code_id,
         code=code,
         used=False
     ).first()
