@@ -1,8 +1,7 @@
 # api-side
 This is **API Server** for my **[Portfolio](https://ch1ck.xyz)**!
 
-## Links
-* **new** client: [chick0/ch1ck.xyz](https://github.com/chick0/ch1ck.xyz)
+* client: [chick0/ch1ck.xyz](https://github.com/chick0/ch1ck.xyz)
 
 ## how to run
 
@@ -15,7 +14,12 @@ This is **API Server** for my **[Portfolio](https://ch1ck.xyz)**!
    ```
    pip install -r requirements.txt
    ```
-3. start gunicorn
+3. set up dotenv value
    ```
-   gunicorn -c gunicorn.py
+   cp .env.example .env
+   vim .env
+   ```
+4. start uvicorn server
+   ```
+   ./start.py
    ```
