@@ -9,7 +9,6 @@ from fastapi import APIRouter
 
 router = APIRouter(
     prefix="/auth",
-    tags=['auth']
 )
 
 for e in __all__:

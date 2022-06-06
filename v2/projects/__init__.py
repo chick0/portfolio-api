@@ -9,7 +9,6 @@ from fastapi import APIRouter
 
 router = APIRouter(
     prefix="/projects",
-    tags=['projects']
 )
 
 for e in __all__:
