@@ -2,62 +2,74 @@ from datetime import datetime
 from datetime import timedelta
 
 from sqlalchemy import func
+from sqlalchemy import Column
+from sqlalchemy import Integer
+from sqlalchemy import String
+from sqlalchemy import Text
+from sqlalchemy import DateTime
+from sqlalchemy import Boolean
+from sqlalchemy import ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
 
-from app import db
+Base = declarative_base()
 
 
-class Project(db.Model):
-    uuid = db.Column(
-        db.String(36),
+class Project(Base):
+    __tablename__ = "project"
+
+    uuid = Column(
+        String(36),
         unique=True,
         primary_key=True,
         nullable=False
     )
 
-    title = db.Column(
-        db.String(100),
+    title = Column(
+        String(100),
         nullable=False,
     )
 
-    date = db.Column(
-        db.DateTime,
+    date = Column(
+        DateTime,
         nullable=False,
         default=func.now()
     )
 
-    tag = db.Column(db.Text)
+    tag = Column(Text)
 
-    web = db.Column(
-        db.String(256)
+    web = Column(
+        String(256)
     )
-    github = db.Column(
-        db.String(256)
+    github = Column(
+        String(256)
     )
 
-    a = db.Column(db.Text)  # 기획 의도
-    b = db.Column(db.Text)  # 특징
-    c = db.Column(db.Text)  # 느낀점
+    a = Column(Text)  # 기획 의도
+    b = Column(Text)  # 특징
+    c = Column(Text)  # 느낀점
 
     def __repr__(self):
         return f"<Project uuid={self.uuid!r}, title={self.title!r}>"
 
 
-class User(db.Model):
-    id = db.Column(
-        db.Integer,
+class User(Base):
+    __tablename__ = "user"
+
+    id = Column(
+        Integer,
         unique=True,
         primary_key=True,
         nullable=False
     )
 
-    email = db.Column(
-        db.String(96),
+    email = Column(
+        String(96),
         unique=True,
         nullable=False
     )
 
-    password = db.Column(
-        db.String(128),
+    password = Column(
+        String(128),
         nullable=False
     )
 
@@ -65,39 +77,41 @@ class User(db.Model):
         return f"<User id={self.id} email={self.email!r}>"
 
 
-class Code(db.Model):
-    id = db.Column(
-        db.Integer,
+class Code(Base):
+    __tablename__ = "code"
+
+    id = Column(
+        Integer,
         unique=True,
         primary_key=True,
         nullable=False
     )
 
-    owner_id = db.Column(
-        db.Integer,
-        db.ForeignKey("user.id")
+    owner_id = Column(
+        Integer,
+        ForeignKey("user.id")
     )
 
     # - : 연장 하는데 사용된 인증 토큰 / 재사용 불가능
     # # : 인증 정보가 취소된 인증 토큰 / 사용 불가능
     # @ : 연장으로 취소된 인증 토큰 / 사용 불가능
-    code = db.Column(
-        db.String(6),
+    code = Column(
+        String(6),
         nullable=False
     )
 
-    ip = db.Column(
-        db.String(120),
+    ip = Column(
+        String(120),
         nullable=False
     )
 
-    used = db.Column(
-        db.Boolean,
+    used = Column(
+        Boolean,
         nullable=False,
     )
 
-    creation_date = db.Column(
-        db.DateTime,
+    creation_date = Column(
+        DateTime,
         nullable=False,
         default=func.now()
     )
