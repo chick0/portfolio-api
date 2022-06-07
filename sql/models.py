@@ -1,6 +1,3 @@
-from datetime import datetime
-from datetime import timedelta
-
 from sqlalchemy import func
 from sqlalchemy import Column
 from sqlalchemy import Integer
