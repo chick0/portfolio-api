@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from sql import get_session
 from sql.models import User
 from sql.models import Code
-from sql.models import Session
+from sql.models import LoginSession
 from v2.utils import create_token
 from mail.utils import send_mail
 
@@ -118,18 +118,18 @@ async def code_verify(request: VerifyRequest, ctx: Request):
             }
         )
 
-    sess = Session()
-    sess.owner_id = code.owner_id
-    sess.ip = ctx.client.host
-    sess.revoked = False
+    login_session = LoginSession()
+    login_session.owner_id = code.owner_id
+    login_session.ip = ctx.client.host
+    login_session.revoked = False
 
-    session.add(sess)
+    session.add(login_session)
     session.delete(code)
     session.commit()
 
     return TokenResponse(
         token=create_token(
-            user_id=sess.owner_id,
-            session_id=sess.id,
+            user_id=login_session.owner_id,
+            session_id=login_session.id,
         )
     )

@@ -117,7 +117,7 @@ class Code(Base):
         return f"<Code id={self.id} owner_id={self.owner_id}>"
 
 
-class Session(Base):
+class LoginSession(Base):
     __tablename__ = "session"
 
     id = Column(
@@ -150,4 +150,4 @@ class Session(Base):
     )
 
     def __repr__(self):
-        return f"<Code id={self.id} owner_id={self.owner_id}>"
+        return f"<LoginSession id={self.id} owner_id={self.owner_id}>"
