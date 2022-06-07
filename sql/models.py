@@ -92,9 +92,6 @@ class Code(Base):
         ForeignKey("user.id")
     )
 
-    # - : 연장 하는데 사용된 인증 토큰 / 재사용 불가능
-    # # : 인증 정보가 취소된 인증 토큰 / 사용 불가능
-    # @ : 연장으로 취소된 인증 토큰 / 사용 불가능
     code = Column(
         String(6),
         nullable=False
@@ -105,9 +102,39 @@ class Code(Base):
         nullable=False
     )
 
-    used = Column(
-        Boolean,
+    creation_date = Column(
+        DateTime,
         nullable=False,
+        default=func.now()
+    )
+
+    expired_date = Column(
+        DateTime,
+        nullable=False
+    )
+
+    def __repr__(self):
+        return f"<Code id={self.id} owner_id={self.owner_id}>"
+
+
+class Session(Base):
+    __tablename__ = "session"
+
+    id = Column(
+        Integer,
+        unique=True,
+        primary_key=True,
+        nullable=False
+    )
+
+    owner_id = Column(
+        Integer,
+        ForeignKey("user.id")
+    )
+
+    ip = Column(
+        String(120),
+        nullable=False
     )
 
     creation_date = Column(
@@ -116,19 +143,11 @@ class Code(Base):
         default=func.now()
     )
 
-    def is_expired(self) -> bool:
-        return self.creation_date < datetime.now() - timedelta(minutes=3)
-
-    def to_json(self) -> dict:
-        return {
-            "id": self.id,
-            "owner_id": self.owner_id,
-            "code": self.code if len(self.code) == 1 else "******",
-            "ip": self.ip,
-            "used": self.used,
-            "creation_date": round(self.creation_date.timestamp()),
-            "expired": self.is_expired()
-        }
+    revoked = Column(
+        Boolean,
+        nullable=False,
+        default=False
+    )
 
     def __repr__(self):
         return f"<Code id={self.id} owner_id={self.owner_id}>"
