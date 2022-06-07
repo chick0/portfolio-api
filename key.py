@@ -3,9 +3,9 @@ from secrets import token_bytes
 FILE = ".JWT_SECRET"
 
 
-def get() -> bytes:
+def get() -> str:
     with open(FILE, mode="rb") as reader:
-        return reader.read()
+        return reader.read().hex()
 
 
 def create() -> None:
