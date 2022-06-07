@@ -1,7 +1,7 @@
 __all__ = [
     "create",
     "detail",
-    "index",
+    "list",
 ]
 
 from . import *
