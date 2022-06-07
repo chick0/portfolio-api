@@ -3,6 +3,7 @@ from math import ceil
 from fastapi import APIRouter
 from fastapi import HTTPException
 from pydantic import BaseModel
+from sqlalchemy import and_
 
 from sql import get_session
 from sql.models import Project
@@ -80,5 +81,52 @@ async def show_list(page: int = 1):
     response_model=ProjectList
 )
 async def show_list_with_tags(tags: str, page: int = 1):
+    tag_filter = and_(
+        Project.tag.like(f"%{x}%")
+        for x in [x.strip() for x in tags.split(",")]
+        if len(x) != 0
+    )
+
     session = get_session()
-    return []
+
+    length = session.query(Project).filter(tag_filter).count()
+    max_page = ceil(length / ITEM_PER_PAGE)
+
+    if length == 0:
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "alert": "해당 조건을 만족하는 프로젝트가 없습니다!"
+            }
+        )
+
+    if page > max_page or page <= 0:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "alert": "요청하신 페이지를 찾을 수 없습니다.",
+                "max": max_page
+            }
+        )
+
+    return ProjectList(
+        projectList=[
+            ProjectPreview(
+                uuid=x.uuid,
+                title=x.title,
+                date=x.date.strftime("%Y년 %m월 %d일"),
+                tags=[x.strip() for x in x.tag.split(",")]
+            ) for x in session.query(Project).order_by(
+                Project.date.desc()
+            ).with_entities(
+                Project.uuid,
+                Project.title,
+                Project.date,
+                Project.tag,
+            ).filter(tag_filter).offset(ITEM_PER_PAGE * (page - 1)).limit(ITEM_PER_PAGE).all()
+        ],
+        page=PageData(
+            this=page,
+            max=max_page,
+        )
+    )
