@@ -21,7 +21,7 @@ class TokenCheckResponse(BaseModel):
 
 
 @router.get(
-    "",
+    "/token",
     description="인증 토큰이 유요한지 검사합니다.",
     response_model=TokenCheckResponse
 )
