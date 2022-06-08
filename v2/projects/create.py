@@ -36,7 +36,7 @@ class ProjectRequest(BaseModel):
     response_model=ProjectCreated
 )
 async def create_project(request: ProjectRequest, token=Depends(auth_scheme)):
-    payload = parse_token(token=token)
+    parse_token(token=token)
 
     project = Project()
     project.uuid = uuid4().__str__()

@@ -102,14 +102,14 @@ async def project_detail(project_id: str):
     response_model=ProjectUpdateResult
 )
 async def project_edit(project_id: str, request: ProjectEditRequest, token=Depends(auth_scheme)):
-    payload = parse_token(token=token)
+    parse_token(token=token)
     session = get_session()
 
     project: Project = session.query(Project).filter_by(
         uuid=project_id
     ).first()
 
-    if payload is None:
+    if project is None:
         raise HTTPException(
             status_code=404,
             detail={
@@ -145,7 +145,7 @@ async def project_edit(project_id: str, request: ProjectEditRequest, token=Depen
     response_model=ProjectUpdateResult
 )
 async def project_delete(project_id: str, token=Depends(auth_scheme)):
-    payload = parse_token(token=token)
+    parse_token(token=token)
     session = get_session()
 
     deleted = session.query(Project).filter_by(
