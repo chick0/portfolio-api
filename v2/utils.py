@@ -6,6 +6,7 @@ from fastapi.security.http import HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from jwt import encode
 from jwt import decode
+from jwt.exceptions import DecodeError
 
 from key import get
 from sql import get_session
@@ -34,11 +35,19 @@ def create_token(user_id: int, session_id: int) -> str:
 
 
 def parse_token(token: HTTPAuthorizationCredentials) -> TokenPayload:
-    payload = TokenPayload(**decode(
-        jwt=token.credentials,
-        key=get(),
-        algorithms=algorithms
-    ))
+    try:
+        payload = TokenPayload(**decode(
+            jwt=token.credentials,
+            key=get(),
+            algorithms=algorithms
+        ))
+    except (DecodeError, Exception):
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "alert": "인증 토큰이 올바르지 않습니다."
+            }
+        )
 
     if datetime.fromtimestamp(payload.exp) < datetime.now():
         raise HTTPException(
