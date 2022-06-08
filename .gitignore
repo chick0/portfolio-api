@@ -1,6 +1,6 @@
-.idea
-__pycache__
+.idea/
+venv/
+__pycache__/
 
 .env
-.SECRET_KEY
-*.ini
+.JWT_SECRET

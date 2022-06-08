@@ -1,10 +1,8 @@
-# api-side
-This is **API Server** for my **[Portfolio](https://ch1ck.xyz)**!
+# mypt api
 
-## Links
-* **new** client: [chick0/ch1ck.xyz](https://github.com/chick0/ch1ck.xyz)
+**my** **p**or**t**folio **api** written with FastAPI
 
-* ~~*old* client: [chick0/mypt_client](https://github.com/chick0/mypt_client)~~
+* svelte client: [chick0/ch1ck.xyz](https://github.com/chick0/ch1ck.xyz)
 
 ## how to run
 
@@ -17,7 +15,13 @@ This is **API Server** for my **[Portfolio](https://ch1ck.xyz)**!
    ```
    pip install -r requirements.txt
    ```
-3. start gunicorn
+3. set up dotenv value
    ```
-   gunicorn -c gunicorn.py
+   cp .env.example .env
+   vim .env
    ```
+4. start uvicorn server
+   ```
+   ./start.py
+   ```
+   * add `--no-docs` to disable openapi docs ui

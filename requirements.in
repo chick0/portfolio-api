@@ -1,17 +1,7 @@
-flask
-flask-sqlalchemy
-flask-migrate
-
-python-dotenv
-
+fastapi
+uvicorn
 pyjwt
-
-# CORS
-Flask-Cors
-
-# mysqlclient for production environment
+python-dotenv
+SQLAlchemy
+alembic
 mysqlclient
-
-# gunicorn for production environment
-gunicorn
-gevent
