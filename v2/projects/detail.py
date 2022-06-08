@@ -21,6 +21,14 @@ class Date(BaseModel):
     ymd: str
 
 
+def to_date(date: datetime) -> Date:
+    return Date(
+        timestamp=round(date.timestamp()),
+        pretty=date.strftime("%Y년 %m월 %d일"),
+        ymd=date.strftime("%Y-%m-%d")
+    )
+
+
 class ProjectDetail(BaseModel):
     uuid: str
     title: str
@@ -72,10 +80,8 @@ async def show_detail(project_id: str):
     return ProjectDetail(
         uuid=project.uuid,
         title=project.title,
-        date=Date(
-            timestamp=round(project.date.timestamp()),
-            pretty=project.date.strftime("%Y년 %m월 %d일"),
-            ymd=project.date.strftime("%Y-%m-%d")
+        date=to_date(
+            date=project.date
         ),
         tags=[
             x

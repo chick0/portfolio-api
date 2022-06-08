@@ -6,6 +6,8 @@ from pydantic import BaseModel
 from sql import get_session
 from sql.models import LoginSession
 from v2.utils import parse_token
+from v2.projects.detail import Date
+from v2.projects.detail import to_date
 
 router = APIRouter(
     prefix="/history"
@@ -17,7 +19,7 @@ auth_scheme = HTTPBearer()
 class LoginHistory(BaseModel):
     id: int
     ip: str
-    creation_date: int
+    creation_date: Date
     revoked: bool
     same: bool
 
@@ -39,7 +41,9 @@ async def login_history(token=Depends(auth_scheme)):
             {
                 "id": x.id,
                 "ip": x.ip,
-                "creation_date": round(x.creation_date.timestamp()),
+                "creation_date": to_date(
+                    date=x.creation_date
+                ),
                 "revoked": x.revoked,
                 "same": x.id == payload.session_id,
             } for x in session.query(LoginSession).filter_by(
