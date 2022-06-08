@@ -6,6 +6,8 @@ from datetime import timedelta
 from fastapi import APIRouter
 from fastapi import Request
 from fastapi import HTTPException
+from fastapi import Depends
+from fastapi.security import HTTPBearer
 from pydantic import BaseModel
 
 from sql import get_session
@@ -13,11 +15,14 @@ from sql.models import User
 from sql.models import Code
 from sql.models import LoginSession
 from v2.utils import create_token
+from v2.utils import parse_token
 from mail.utils import send_mail
 
 router = APIRouter(
     prefix="/login"
 )
+
+auth_scheme = HTTPBearer()
 
 
 class LoginRequest(BaseModel):
@@ -131,5 +136,20 @@ async def code_verify(request: VerifyRequest, ctx: Request):
         token=create_token(
             user_id=login_session.owner_id,
             session_id=login_session.id,
+        )
+    )
+
+
+@router.post(
+    "/renew",
+    description="발급된 인증 토큰을 연장합니다.",
+    response_model=TokenResponse
+)
+async def token_renew(token=Depends(auth_scheme)):
+    payload = parse_token(token=token)
+    return TokenResponse(
+        token=create_token(
+            user_id=payload.user_id,
+            session_id=payload.session_id
         )
     )
