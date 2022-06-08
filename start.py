@@ -1,5 +1,6 @@
 from os import environ
 from os.path import exists
+from sys import argv
 from uvicorn import run
 from fastapi import FastAPI
 from fastapi import APIRouter
@@ -21,7 +22,8 @@ else:
     app = FastAPI(
         title="My Portfolio API",
         description="https://github.com/chick0/mypt_api",
-        version="2.0.0"
+        version="2.0.0",
+        openapi_url=None if '--no-docs' in argv else "/openapi.json"
     )
 
     versions = [

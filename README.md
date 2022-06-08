@@ -1,7 +1,8 @@
-# api-side
-This is **API Server** for my **[Portfolio](https://ch1ck.xyz)**!
+# mypt api
 
-* client: [chick0/ch1ck.xyz](https://github.com/chick0/ch1ck.xyz)
+**my** **p**or**t**folio **api** written with FastAPI
+
+* svelte client: [chick0/ch1ck.xyz](https://github.com/chick0/ch1ck.xyz)
 
 ## how to run
 
@@ -23,3 +24,4 @@ This is **API Server** for my **[Portfolio](https://ch1ck.xyz)**!
    ```
    ./start.py
    ```
+   * add `--no-docs` to disable openapi docs ui
