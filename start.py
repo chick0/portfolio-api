@@ -1,7 +1,9 @@
+from os import environ
 from os.path import exists
 from uvicorn import run
 from fastapi import FastAPI
 from fastapi import APIRouter
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 if __name__ == "__main__":
@@ -25,6 +27,23 @@ else:
     versions = [
         "v2",
     ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[
+            x.strip()
+            for x in environ['CORS_ORIGIN'].split(",")
+        ],
+        allow_methods=[
+            "GET",
+            "PUT",
+            "POST",
+            "DELETE"
+        ],
+        allow_headers=[
+            "Authorization"
+        ]
+    )
 
     for version in [__import__(x) for x in versions]:
         dummy = APIRouter(
