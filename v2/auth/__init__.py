@@ -1,4 +1,5 @@
 __all__ = [
+    "check",
     "history",
     "login",
     "logout",
