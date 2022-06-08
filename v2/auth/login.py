@@ -140,7 +140,7 @@ async def code_verify(request: VerifyRequest, ctx: Request):
     )
 
 
-@router.post(
+@router.get(
     "/renew",
     description="발급된 인증 토큰을 연장합니다.",
     response_model=TokenResponse
