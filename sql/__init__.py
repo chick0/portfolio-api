@@ -7,7 +7,11 @@ from dotenv import load_dotenv
 if 'SQLALCHEMY_DATABASE_URI' not in environ:
     load_dotenv()
 
-engine = create_engine(environ['SQLALCHEMY_DATABASE_URI'])
+engine = create_engine(
+    url=environ['SQLALCHEMY_DATABASE_URI'],
+    pool_size=5,
+    max_overflow=15
+)
 session_factory = sessionmaker(bind=engine)
 
 
