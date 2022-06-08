@@ -3,6 +3,7 @@ from datetime import datetime
 
 from fastapi import APIRouter
 from fastapi import Depends
+from fastapi import HTTPException
 from fastapi.security import HTTPBearer
 from pydantic import BaseModel
 
@@ -40,8 +41,17 @@ async def create_project(request: ProjectRequest, token=Depends(auth_scheme)):
 
     project = Project()
     project.uuid = uuid4().__str__()
-    project.title = request.title
-    project.date = datetime.strptime(request.date, "%Y-%m-%d")
+    project.title = request.title.strip()
+    try:
+        project.date = datetime.strptime(request.date, "%Y-%m-%d")
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "alert": "날짜 형식이 올바르지 않습니다."
+            }
+        )
+
     project.tag = request.tag
     project.web = request.web
     project.github = request.github
