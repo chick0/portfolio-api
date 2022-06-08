@@ -37,7 +37,7 @@ class ProjectList(BaseModel):
     description="프로젝트 목록을 불러옵니다.",
     response_model=ProjectList
 )
-async def show_list(page: int = 1):
+async def get_project_list(page: int = 1):
     session = get_session()
 
     length = session.query(Project).count()
@@ -80,7 +80,7 @@ async def show_list(page: int = 1):
     description="태그와 관련된 프로젝트 목록을 불러옵니다.",
     response_model=ProjectList
 )
-async def show_list_with_tags(tags: str, page: int = 1):
+async def get_project_list_by_tags(tags: str, page: int = 1):
     tag_filter = and_(
         Project.tag.like(f"%{x}%")
         for x in [x.strip() for x in tags.split(",")]

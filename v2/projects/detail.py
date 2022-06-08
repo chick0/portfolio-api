@@ -62,7 +62,7 @@ class ProjectUpdateResult(BaseModel):
     description="프로젝트 정보를 불러옵니다.",
     response_model=ProjectDetail
 )
-async def show_detail(project_id: str):
+async def project_detail(project_id: str):
     session = get_session()
 
     project: Project = session.query(Project).filter_by(
@@ -101,7 +101,7 @@ async def show_detail(project_id: str):
     description="프로젝트 정보를 수정합니다.",
     response_model=ProjectUpdateResult
 )
-async def edit(project_id: str, request: ProjectEditRequest, token=Depends(auth_scheme)):
+async def project_edit(project_id: str, request: ProjectEditRequest, token=Depends(auth_scheme)):
     payload = parse_token(token=token)
     session = get_session()
 
@@ -144,7 +144,7 @@ async def edit(project_id: str, request: ProjectEditRequest, token=Depends(auth_
     description="프로젝트 정보를 삭제합니다.",
     response_model=ProjectUpdateResult
 )
-async def delete(project_id: str, token=Depends(auth_scheme)):
+async def project_delete(project_id: str, token=Depends(auth_scheme)):
     payload = parse_token(token=token)
     session = get_session()
 

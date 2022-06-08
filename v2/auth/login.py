@@ -50,7 +50,7 @@ class TokenResponse(BaseModel):
     description="이메일과 비밀번호로 로그인을 진행합니다.",
     response_model=LoginResponse
 )
-async def login(request: LoginRequest, ctx: Request):
+async def login_with_password(request: LoginRequest, ctx: Request):
     session = get_session()
     user: User = session.query(User).filter_by(
         email=request.email,

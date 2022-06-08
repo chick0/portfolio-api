@@ -23,7 +23,7 @@ class LogoutResult(BaseModel):
     description="세션을 삭제하고 로그아웃 합니다.",
     response_model=LogoutResult
 )
-async def logout(token=Depends(auth_scheme)):
+async def session_logout(token=Depends(auth_scheme)):
     payload = parse_token(token=token)
     session = get_session()
 
