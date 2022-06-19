@@ -77,14 +77,27 @@ async def get_project_list(page: int = 1):
 
 @router.get(
     "/tags",
-    description="태그와 관련된 프로젝트 목록을 불러옵니다.",
+    description="해당 태그가 포함된 프로젝트 목록을 불러옵니다.",
     response_model=ProjectList
 )
-async def get_project_list_by_tags(tags: str, page: int = 1):
-    tag_filter = and_(
-        Project.tag.like(f"%{x}%")
+async def get_project_list_with_tags(tags: str, page: int = 1):
+    tags = [
+        x
         for x in [x.strip() for x in tags.split(",")]
         if len(x) != 0
+    ]
+
+    if len(tags) == 0:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "alert": "검색할 태그가 없습니다."
+            }
+        )
+
+    tag_filter = and_(
+        Project.tag.like(f"%{x}%")
+        for x in tags
     )
 
     session = get_session()
