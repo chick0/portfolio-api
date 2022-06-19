@@ -1,5 +1,9 @@
 from os import environ
 from os.path import exists
+from os import mkdir
+from os.path import join
+from os.path import abspath
+from os.path import dirname
 from sys import argv
 from uvicorn import run
 from fastapi import FastAPI
@@ -12,6 +16,11 @@ if __name__ == "__main__":
         getattr(__import__("key"), "create")()
 
     load_dotenv()
+
+    environ.__setitem__("STORAGE_PATH", join(dirname(abspath(__file__)), ".storage"))
+    if not exists(environ['STORAGE_PATH']):
+        mkdir(".storage")
+
     run(
         app="start:app",
         host="127.0.0.1",
@@ -28,6 +37,7 @@ else:
 
     versions = [
         "v2",
+        "v3",
     ]
 
     app.add_middleware(
