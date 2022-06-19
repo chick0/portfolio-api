@@ -32,10 +32,7 @@ else:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[
-            x.strip()
-            for x in environ['CORS_ORIGIN'].split(",")
-        ],
+        allow_origins=[environ['CORS_ORIGIN'].strip()],
         allow_methods=[
             "GET",
             "PUT",
