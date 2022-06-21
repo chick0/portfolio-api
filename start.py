@@ -48,7 +48,7 @@ else:
         ],
         allow_methods=[
             "GET",
-            "PUT",
+            "PATCH",
             "POST",
             "DELETE"
         ],
