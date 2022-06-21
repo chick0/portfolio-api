@@ -20,20 +20,19 @@ auth_scheme = HTTPBearer()
 )
 async def storage_item_list(token=Depends(auth_scheme)):
     parse_token(token=token)
-    session = get_session()
-
-    return StorageItems(
-        items=[
-            StorageItem(
-                uuid=x.uuid,
-                name=x.name,
-                creation_date=to_date(date=x.creation_date)
-            ) for x in session.query(Storage).order_by(
-                Storage.creation_date.desc()
-            ).with_entities(
-                Storage.uuid,
-                Storage.name,
-                Storage.creation_date,
-            ).all()
-        ]
-    )
+    with get_session() as session:
+        return StorageItems(
+            items=[
+                StorageItem(
+                    uuid=x.uuid,
+                    name=x.name,
+                    creation_date=to_date(date=x.creation_date)
+                ) for x in session.query(Storage).order_by(
+                    Storage.creation_date.desc()
+                ).with_entities(
+                    Storage.uuid,
+                    Storage.name,
+                    Storage.creation_date,
+                ).all()
+            ]
+        )
