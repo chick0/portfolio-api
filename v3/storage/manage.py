@@ -9,7 +9,7 @@ from fastapi.security import HTTPBearer
 
 from sql import get_session
 from sql.models import Storage
-from v2.utils import parse_token
+from utils.token import parse_token
 from v3.utils import to_date
 from v3.utils import get_path
 from v3.storage.models import StorageItem
