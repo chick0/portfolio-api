@@ -3,6 +3,7 @@ from uuid import uuid4
 from fastapi import APIRouter
 from fastapi import UploadFile
 from fastapi import Depends
+from fastapi import status as _
 from fastapi.security import HTTPBearer
 
 from sql import get_session
@@ -14,12 +15,14 @@ from v3.storage.models import StorageItem
 
 router = APIRouter()
 auth_scheme = HTTPBearer()
+HTTP_201_CREATED = _.HTTP_201_CREATED
 
 
 @router.post(
     '/upload',
     description="파일을 업로드 합니다.",
-    response_model=StorageItem
+    response_model=StorageItem,
+    status_code=HTTP_201_CREATED
 )
 async def storage_upload(file: UploadFile, token=Depends(auth_scheme)):
     parse_token(token=token)
