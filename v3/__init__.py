@@ -1,6 +1,7 @@
 __all__ = [
     "auth",
     "otp",
+    "project",
     "projects",
     "storage",
 ]
