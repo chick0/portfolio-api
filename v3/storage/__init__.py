@@ -8,9 +8,7 @@ __all__ = [
 from . import *
 from fastapi import APIRouter
 
-router = APIRouter(
-    prefix="/storage",
-)
+router = APIRouter(prefix="/storage")
 
 for e in __all__:
     router.include_router(getattr(locals()[e], "router"))
