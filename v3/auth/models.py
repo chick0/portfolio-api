@@ -46,3 +46,12 @@ class VerifyRequest(BaseModel):
     user_id: int
     request_id: int
     token: str
+
+
+class PasswordUpdateRequest(BaseModel):
+    old_password: str
+    new_password: str
+
+
+class PasswordUpdateStatus(BaseModel):
+    status: bool

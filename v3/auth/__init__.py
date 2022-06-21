@@ -1,5 +1,6 @@
 __all__ = [
     "login",
+    "password",
     "session",
     "token",
     "verify",
