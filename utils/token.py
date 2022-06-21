@@ -51,7 +51,7 @@ def parse_token(token: HTTPAuthorizationCredentials) -> TokenPayload:
             }
         )
 
-    session = await get_session()
+    session = get_session()
     login_session: LoginSession = session.query(LoginSession).filter_by(
         id=payload.session_id,
         owner_id=payload.user_id,
@@ -66,4 +66,5 @@ def parse_token(token: HTTPAuthorizationCredentials) -> TokenPayload:
             }
         )
 
+    session.close()
     return payload
