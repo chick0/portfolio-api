@@ -4,7 +4,7 @@ from fastapi.responses import FileResponse
 
 from sql import get_session
 from sql.models import Storage
-from v3.utils import get_safe_path
+from v3.storage.utils import get_safe_path
 
 router = APIRouter(prefix="/download")
 

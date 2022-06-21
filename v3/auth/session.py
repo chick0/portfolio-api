@@ -8,7 +8,7 @@ from utils.token import parse_token
 from v3.auth.models import Session
 from v3.auth.models import SessionList
 from v3.auth.models import SessionRevokeStatus
-from v3.utils import to_date
+from v3.storage.utils import to_date
 
 router = APIRouter(prefix="/session")
 auth_scheme = HTTPBearer()

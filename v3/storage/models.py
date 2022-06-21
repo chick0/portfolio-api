@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class Date(BaseModel):
     timestamp: int
     pretty: str
+    ymd: str
 
 
 class StorageItem(BaseModel):

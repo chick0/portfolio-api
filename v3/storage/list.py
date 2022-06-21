@@ -5,7 +5,7 @@ from fastapi.security import HTTPBearer
 from sql import get_session
 from sql.models import Storage
 from utils.token import parse_token
-from v3.utils import to_date
+from v3.storage.utils import to_date
 from v3.storage.models import StorageItem
 from v3.storage.models import StorageItems
 
@@ -26,7 +26,9 @@ async def storage_item_list(token=Depends(auth_scheme)):
                 StorageItem(
                     uuid=x.uuid,
                     name=x.name,
-                    creation_date=to_date(date=x.creation_date)
+                    creation_date=to_date(
+                        date=x.creation_date
+                    )
                 ) for x in session.query(Storage).order_by(
                     Storage.creation_date.desc()
                 ).with_entities(

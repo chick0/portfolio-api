@@ -10,7 +10,8 @@ from v3.storage.models import Date
 def to_date(date: datetime) -> Date:
     return Date(
         timestamp=round(date.timestamp()),
-        pretty=date.strftime("%Y년 %m월 %d일 / %H시 %M분"),
+        pretty=date.strftime("%Y년 %m월 %d일"),
+        ymd=date.strftime("%Y-%m-%d"),
     )
 
 
