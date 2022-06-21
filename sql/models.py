@@ -70,12 +70,16 @@ class User(Base):
         nullable=False
     )
 
+    otp = Column(
+        String(32)
+    )
+
     def __repr__(self):
         return f"<User id={self.id} email={self.email!r}>"
 
 
-class Code(Base):
-    __tablename__ = "code"
+class LoginRequest(Base):
+    __tablename__ = "login_request"
 
     id = Column(
         Integer,
@@ -111,11 +115,11 @@ class Code(Base):
     )
 
     def __repr__(self):
-        return f"<Code id={self.id} owner_id={self.owner_id}>"
+        return f"<LoginRequest id={self.id} owner_id={self.owner_id}>"
 
 
 class LoginSession(Base):
-    __tablename__ = "session"
+    __tablename__ = "login_session"
 
     id = Column(
         Integer,
