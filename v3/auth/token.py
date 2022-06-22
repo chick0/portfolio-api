@@ -61,10 +61,13 @@ async def revoke_token(token=Depends(auth_scheme)):
     payload = parse_token(token=token)
     session = get_session()
 
-    session.query(LoginSession).filter_by(
+    login_session: LoginSession = session.query(LoginSession).filter_by(
         id=payload.session_id,
         owner_id=payload.user_id
-    ).delete()
+    ).first()
+
+    if login_session is not None:
+        login_session.revoked = True
 
     session.commit()
     session.close()

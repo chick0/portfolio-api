@@ -50,16 +50,25 @@ async def revoke_session(session_id: int, token=Depends(auth_scheme)):
     payload = parse_token(token=token)
     session = get_session()
 
-    deleted = session.query(LoginSession).filter_by(
+    login_session: LoginSession = session.query(LoginSession).filter_by(
         id=session_id,
         owner_id=payload.user_id
-    ).delete()
+    ).first()
+
+    if login_session is None:
+        session.close()
+
+        return SessionRevokeStatus(
+            status=False
+        )
+
+    login_session.revoked = True
 
     session.commit()
     session.close()
 
     return SessionRevokeStatus(
-        status=deleted == 1
+        status=True
     )
 
 
