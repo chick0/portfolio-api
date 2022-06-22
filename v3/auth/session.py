@@ -65,10 +65,10 @@ async def revoke_session(session_id: int, token=Depends(auth_scheme)):
 
 @router.delete(
     "/session",
-    description="모든 세션을 만료 시킵니다.",
+    description="등록된 모든 세션을 삭제합니다.",
     response_model=SessionRevokeStatus
 )
-async def revoke_all_session(token=Depends(auth_scheme)):
+async def delete_all_session(token=Depends(auth_scheme)):
     payload = parse_token(token=token)
     session = get_session()
 
