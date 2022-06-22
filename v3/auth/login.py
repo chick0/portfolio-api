@@ -78,7 +78,7 @@ async def login_with_password(request: _LoginRequest, ctx: Request):
 
     send_mail(
         email=user.email,
-        code=request_id,
+        code=login_request.code,
         ip=ctx.client.host
     )
 
