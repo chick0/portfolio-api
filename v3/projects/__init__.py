@@ -18,6 +18,7 @@ router = APIRouter()
 @router.get(
     "/projects",
     description="프로젝트 목록을 불러옵니다.",
+    response_model=ProjectList
 )
 async def project_list(page: int = 1):
     with get_session() as session:
@@ -69,6 +70,7 @@ async def project_list(page: int = 1):
 @router.get(
     "/projects/tags",
     description="프로젝트 목록을 불러옵니다.",
+    response_model=ProjectList
 )
 async def project_list_with_tags(tags: str, page: int = 1):
     tags = [
