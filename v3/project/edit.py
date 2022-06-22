@@ -8,7 +8,7 @@ from fastapi.security import HTTPBearer
 from sql import get_session
 from sql.models import Project
 from utils.token import parse_token
-from v3.project.models import ProjectEditRequest
+from v3.project.models import ProjectRequest
 from v3.project.models import ProjectEditResult
 
 router = APIRouter()
@@ -20,7 +20,7 @@ auth_scheme = HTTPBearer()
     description="프로젝트 정보를 수정합니다.",
     response_model=ProjectEditResult
 )
-async def project_detail(project_uuid: str, request: ProjectEditRequest, token=Depends(auth_scheme)):
+async def project_detail(project_uuid: str, request: ProjectRequest, token=Depends(auth_scheme)):
     parse_token(token=token)
     session = get_session()
 
@@ -43,7 +43,7 @@ async def project_detail(project_uuid: str, request: ProjectEditRequest, token=D
 
     project.title = request.title
     project.date = date
-    project.tag = request.tags
+    project.tag = request.tag
     project.web = request.web
     project.github = request.github
 
