@@ -15,7 +15,7 @@ auth_scheme = HTTPBearer()
 
 
 @router.get(
-    "/session/list",
+    "/session",
     description="전체 세션 목록을 가져옵니다.",
     response_model=SessionList
 )
