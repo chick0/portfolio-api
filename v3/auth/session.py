@@ -10,7 +10,7 @@ from v3.auth.models import SessionList
 from v3.auth.models import SessionRevokeStatus
 from v3.storage.utils import to_date
 
-router = APIRouter(prefix="/session")
+router = APIRouter()
 auth_scheme = HTTPBearer()
 
 
