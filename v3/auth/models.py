@@ -5,7 +5,6 @@ from v3.storage.models import Date
 class LoginRequest(BaseModel):
     email: str
     password: str
-    verify_method: str
 
 
 class LoginResponse(BaseModel):

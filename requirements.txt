@@ -26,13 +26,11 @@ mako==1.2.0
     # via alembic
 markupsafe==2.1.1
     # via mako
-mysqlclient==2.1.0
+mysqlclient==2.1.1
     # via -r requirements.in
 pydantic==1.9.1
     # via fastapi
 pyjwt==2.4.0
-    # via -r requirements.in
-pyotp==2.6.0
     # via -r requirements.in
 python-dotenv==0.20.0
     # via -r requirements.in

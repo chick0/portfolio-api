@@ -70,10 +70,6 @@ class User(Base):
         nullable=False
     )
 
-    otp = Column(
-        String(32)
-    )
-
     def __repr__(self):
         return f"<User id={self.id} email={self.email!r}>"
 

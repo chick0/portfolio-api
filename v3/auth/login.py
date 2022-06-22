@@ -18,7 +18,6 @@ from v3.auth.models import LoginResponse
 
 router = APIRouter()
 re = compile(r'(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
-verify_methods = ["email", "otp"]
 HTTP_201_CREATED = _.HTTP_201_CREATED
 
 
@@ -29,14 +28,6 @@ HTTP_201_CREATED = _.HTTP_201_CREATED
     status_code=HTTP_201_CREATED
 )
 async def login_with_password(request: _LoginRequest, ctx: Request):
-    if request.verify_method not in verify_methods:
-        raise HTTPException(
-            status_code=400,
-            detail={
-                "alert": "2단계 인증 방식이 올바르지 않습니다."
-            }
-        )
-
     if re.match(request.email) is None:
         raise HTTPException(
             status_code=400,
@@ -58,15 +49,6 @@ async def login_with_password(request: _LoginRequest, ctx: Request):
                 "alert": "이메일 또는 비밀번호가 올바르지 않습니다."
             }
         )
-
-    if request.verify_method == "otp":
-        if user.otp is None:
-            raise HTTPException(
-                status_code=400,
-                detail={
-                    "alert": "OTP 설정이 완료되지 않았습니다."
-                }
-            )
 
     login_request: LoginRequest = session.query(LoginRequest).filter_by(
         owner_id=user.id
@@ -94,12 +76,11 @@ async def login_with_password(request: _LoginRequest, ctx: Request):
     user_id = user.id
     request_id = login_request.id
 
-    if request.verify_method == "email":
-        send_mail(
-            email=user.email,
-            code=login_request.code,
-            ip=ctx.client.host
-        )
+    send_mail(
+        email=user.email,
+        code=request_id,
+        ip=ctx.client.host
+    )
 
     session.close()
 
