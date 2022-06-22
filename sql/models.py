@@ -183,3 +183,43 @@ class Storage(Base):
 
     def __repr__(self):
         return f"<Storage uuid={self.uuid!r}, name={self.name!r}>"
+
+
+class Button(Base):
+    __tablename__ = "button"
+
+    uuid = Column(
+        String(36),
+        unique=True,
+        primary_key=True,
+        nullable=False
+    )
+
+    creation_date = Column(
+        DateTime,
+        nullable=False,
+        default=func.now()
+    )
+
+    project_uuid = Column(
+        String(36),
+        ForeignKey("project.uuid")
+    )
+
+    text = Column(
+        String(100),
+        nullable=False
+    )
+
+    url = Column(
+        Text,
+        nullable=False
+    )
+
+    color = Column(
+        String(100),
+        nullable=False
+    )
+
+    def __repr__(self):
+        return f"<Button uuid={self.uuid!r}, project_uuid={self.project_uuid!r}>"

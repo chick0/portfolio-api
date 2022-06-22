@@ -4,6 +4,7 @@ from fastapi.security import HTTPBearer
 
 from sql import get_session
 from sql.models import Project
+from sql.models import Button
 from utils.token import parse_token
 from v3.project.models import ProjectDeleteStatus
 
@@ -22,6 +23,10 @@ async def project_delete(project_uuid: str, token=Depends(auth_scheme)):
 
     deleted = session.query(Project).filter_by(
         uuid=project_uuid
+    ).delete()
+
+    session.query(Button).filter_by(
+        project_uuid=project_uuid
     ).delete()
 
     session.commit()
