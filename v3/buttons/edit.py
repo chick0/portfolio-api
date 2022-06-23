@@ -42,5 +42,5 @@ async def update_button(button_uuid: str, request: ButtonRequest, token=Depends(
     session.close()
 
     return ButtonEditStatus(
-        result=True,
+        status=True,
     )
