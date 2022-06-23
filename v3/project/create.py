@@ -4,44 +4,41 @@ from datetime import datetime
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import HTTPException
+from fastapi import status as _
 from fastapi.security import HTTPBearer
-from pydantic import BaseModel
 
 from sql import get_session
 from sql.models import Project
-from v2.utils import parse_token
+from utils.token import parse_token
+from v3.project.models import ProjectRequest
+from v3.project.models import ProjectCreated
 
+HTTP_201_CREATED = _.HTTP_201_CREATED
 router = APIRouter()
-
 auth_scheme = HTTPBearer()
-
-
-class ProjectCreated(BaseModel):
-    uuid: str
-
-
-class ProjectRequest(BaseModel):
-    title: str
-    date: str  # YYYY-MM-DD
-    tag: str
-    web: str
-    github: str
-    a: str
-    b: str
-    c: str
 
 
 @router.post(
     "/create",
     description="새로운 프로젝트를 생성합니다.",
-    response_model=ProjectCreated
+    response_model=ProjectCreated,
+    status_code=HTTP_201_CREATED
 )
 async def create_project(request: ProjectRequest, token=Depends(auth_scheme)):
     parse_token(token=token)
 
+    uuid = uuid4().__str__()
+
     project = Project()
-    project.uuid = uuid4().__str__()
+    project.uuid = uuid
     project.title = request.title.strip()
+    project.tag = request.tag
+    project.web = request.web
+    project.github = request.github
+    project.a = request.a
+    project.b = request.b
+    project.c = request.c
+
     try:
         project.date = datetime.strptime(request.date, "%Y-%m-%d")
     except ValueError:
@@ -52,17 +49,11 @@ async def create_project(request: ProjectRequest, token=Depends(auth_scheme)):
             }
         )
 
-    project.tag = request.tag
-    project.web = request.web
-    project.github = request.github
-    project.a = request.a
-    project.b = request.b
-    project.c = request.c
-
     session = get_session()
     session.add(project)
     session.commit()
+    session.close()
 
     return ProjectCreated(
-        uuid=project.uuid
+        uuid=uuid
     )

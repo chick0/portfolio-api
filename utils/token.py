@@ -3,7 +3,6 @@ from datetime import timedelta
 
 from fastapi import HTTPException
 from fastapi.security.http import HTTPAuthorizationCredentials
-from pydantic import BaseModel
 from jwt import encode
 from jwt import decode
 from jwt.exceptions import DecodeError
@@ -11,15 +10,10 @@ from jwt.exceptions import DecodeError
 from key import get
 from sql import get_session
 from sql.models import LoginSession
+from utils.models import TokenPayload
 
 
 algorithms = ['HS256']
-
-
-class TokenPayload(BaseModel):
-    user_id: int
-    session_id: int
-    exp: int
 
 
 def create_token(user_id: int, session_id: int) -> str:
@@ -72,4 +66,5 @@ def parse_token(token: HTTPAuthorizationCredentials) -> TokenPayload:
             }
         )
 
+    session.close()
     return payload

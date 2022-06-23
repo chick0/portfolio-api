@@ -74,8 +74,8 @@ class User(Base):
         return f"<User id={self.id} email={self.email!r}>"
 
 
-class Code(Base):
-    __tablename__ = "code"
+class LoginRequest(Base):
+    __tablename__ = "login_request"
 
     id = Column(
         Integer,
@@ -111,11 +111,11 @@ class Code(Base):
     )
 
     def __repr__(self):
-        return f"<Code id={self.id} owner_id={self.owner_id}>"
+        return f"<LoginRequest id={self.id} owner_id={self.owner_id}>"
 
 
 class LoginSession(Base):
-    __tablename__ = "session"
+    __tablename__ = "login_session"
 
     id = Column(
         Integer,
@@ -148,3 +148,74 @@ class LoginSession(Base):
 
     def __repr__(self):
         return f"<LoginSession id={self.id} owner_id={self.owner_id}>"
+
+
+class Storage(Base):
+    __tablename__ = "storage"
+
+    uuid = Column(
+        String(36),
+        unique=True,
+        primary_key=True,
+        nullable=False
+    )
+
+    creation_date = Column(
+        DateTime,
+        nullable=False,
+        default=func.now()
+    )
+
+    name = Column(
+        String(120),
+        primary_key=True,
+        nullable=False
+    )
+
+    size = Column(
+        Integer,
+        nullable=False,
+    )
+
+    def __repr__(self):
+        return f"<Storage uuid={self.uuid!r}, name={self.name!r}>"
+
+
+class Button(Base):
+    __tablename__ = "button"
+
+    uuid = Column(
+        String(36),
+        unique=True,
+        primary_key=True,
+        nullable=False
+    )
+
+    creation_date = Column(
+        DateTime,
+        nullable=False,
+        default=func.now()
+    )
+
+    project_uuid = Column(
+        String(36),
+        ForeignKey("project.uuid")
+    )
+
+    text = Column(
+        String(100),
+        nullable=False
+    )
+
+    url = Column(
+        Text,
+        nullable=False
+    )
+
+    color = Column(
+        String(100),
+        nullable=False
+    )
+
+    def __repr__(self):
+        return f"<Button uuid={self.uuid!r}, project_uuid={self.project_uuid!r}>"
