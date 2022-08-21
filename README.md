@@ -1,8 +1,8 @@
-# mypt api
+# portfolio-api
 
-**my** **p**or**t**folio **api** written with FastAPI
+my portfolio api server written with FastAPI
 
-* svelte client: [chick0/ch1ck.xyz](https://github.com/chick0/ch1ck.xyz)
+* web client: [chick0/portfolio-client](https://github.com/chick0/portfolio-client)
 
 ## how to run
 
